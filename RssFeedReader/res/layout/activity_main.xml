@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <!-- Header -->
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header" />
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_below="@id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/prompt"
+        android:entries="@array/departamentos"
+        android:saveEnabled="true" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner"
+        android:layout_above="@id/footer"
+        android:background="#ffffff"
+        android:cacheColorHint="#00000000"
+        android:divider="#bababa"
+        android:dividerHeight="1dp"
+        android:listSelector="@android:drawable/list_selector_background" />
+
+</RelativeLayout>

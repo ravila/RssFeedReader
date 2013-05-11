@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dip" >
+     
+    <TextView 
+        android:id="@+id/rss_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+  
+    <!-- Article title -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="1dip"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="#303030" />
+     
+    <!-- published date -->
+    <TextView
+        android:id="@+id/pub_date"
+        android:layout_below="@id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dip"
+        android:textSize="14dp"
+        android:textColor="#b70400"/>
+  
+    <!-- article description -->
+    <TextView android:id="@+id/description"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingBottom="6dip"
+        android:textSize="15dp"
+        android:textColor="#8d8d8d"
+        android:layout_below="@id/pub_date"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_expander"
+        android:contentDescription="@string/app_name" />
+    
+</RelativeLayout>

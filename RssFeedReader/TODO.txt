@@ -1,0 +1,9 @@
+1.	Fazer o parse da descrição da noticia para que seja possivel adicionar o evento ao calendário.
+	Também pode-se melhorar o layout da exibição do evento com essas informações.
+	Também serão usadas para preencher o pdf.
+
+2.	Ao atualizar as noticias de alguma categoria é deletado do BD as noticias antigas e inseridas as novas.
+	Porém, isso faz com que o ID da noticia cresça loucamente (p.e. tem apenas 30 noticias no BD, mas o id é 456).
+	Então penso em duas soluções:
+		* Criar uma tabela para cada categoria, assim vc atualiza todas as linhas da tabela correspondente.
+		* Ao invez de deletar e adicionar, usar a função atualizar. Pensar direito como fazer isso.

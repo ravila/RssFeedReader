@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RssFeedReader</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_display_rss_feed">DisplayRssFeedActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="artigoCompleto">Ver artigo completo</string>
+    <string name="share">Compartilhar</string>
+    <string name="title_activity_display_web_page">DisplayWebPageActivity</string>
+    <string name="back">Voltar</string>
+    <string name="next">Avançar</string>
+    <string name="title">Seminários IME</string>
+    <string name="prompt">Escolha um Departamento</string>
+    
+    <string-array name="departamentos">
+        <item>Computação - DCC</item>
+        <item>Estatística - MAE</item>
+        <item>Matemática - MAT</item>
+        <item>Matemática Aplicada - MAP</item>
+    </string-array>
+
+</resources>
