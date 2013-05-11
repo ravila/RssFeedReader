@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="SimpleDateFormat">
+        <ignore path="src\br\usp\rssfeedreader\EventoIme.java" />
         <ignore path="src\br\usp\rssfeedreader\MainActivity.java" />
     </issue>
 </lint>

@@ -1,12 +1,7 @@
 package br.usp.rssfeedreader;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -23,6 +18,7 @@ public class DisplayRssFeedActivity extends Activity {
 	private ImageButton share;
 	private ImageButton calendar;
 	private RSSItem rssItem;
+	private EventoIme eventoIme;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +42,7 @@ public class DisplayRssFeedActivity extends Activity {
         title.setText(rssItem.getTitle());
         date.setText(rssItem.getPubdate());
         String text = Html.fromHtml(rssItem.getDescription()).toString();
+        eventoIme = parse(text);
         description.setText(text);
         
         link.setOnClickListener(new View.OnClickListener() {
@@ -76,27 +73,24 @@ public class DisplayRssFeedActivity extends Activity {
 			public void onClick(View v) {
 				// Essa opção adiciona um evento no calendário sem mostrar o calendario para o usuario
 				// Necessita de permissao para escrver no calendario
-				pushAppointmentsToCalender(DisplayRssFeedActivity.this, "Oi", "Alo", "aqui mesmo", 1, new Date().getTime());
+				//pushAppointmentsToCalender(DisplayRssFeedActivity.this, "Oi", "Alo", "aqui mesmo", 1, new Date().getTime());
 				
 				// Essa opção eh mais simples, porem faz com que o usuario tenha que confirmar a adição do evento no proprio calendario.
-				Calendar cal = Calendar.getInstance();              
+				//Calendar cal = Calendar.getInstance();              
 				Intent intent = new Intent(Intent.ACTION_EDIT);
 				intent.setType("vnd.android.cursor.item/event");
-				intent.putExtra("beginTime", cal.getTimeInMillis());
-				intent.putExtra("allDay", true);
-				intent.putExtra("rrule", "FREQ=YEARLY");
-				intent.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
-				intent.putExtra("title", "A Test Event from android app");
-				intent.putExtra("title", "Event Title");
-				intent.putExtra("description", "Event Desc");
-				intent.putExtra("eventLocation", "Event Location");
+				intent.putExtra("beginTime", eventoIme.getMiliSeconds());
+				intent.putExtra("endTime", eventoIme.getMiliSeconds()+60*60*1000);
+				intent.putExtra("title", eventoIme.getTitle());
+				intent.putExtra("description", eventoIme.getDescription());
+				intent.putExtra("eventLocation", eventoIme.getPlace());
 				startActivity(intent);
 			}
 		});
          
 	}
 
-	public long pushAppointmentsToCalender(Activity curActivity, String title, String addInfo, String place, int status, long startDate) {
+	/*public long pushAppointmentsToCalender(Activity curActivity, String title, String addInfo, String place, int status, long startDate) {
 
 	    String eventUriString = "content://com.android.calendar/events";
 	    ContentValues eventValues = new ContentValues();
@@ -134,6 +128,34 @@ public class DisplayRssFeedActivity extends Activity {
 	    long eventID = Long.parseLong(eventUri.getLastPathSegment());
 	 
 	    return eventID;
+
+	}*/
+	
+	public EventoIme parse(String texto) {
+		EventoIme evento;
+		String[] splitted;
+		String title = null;
+		String place = null;
+		String category = null;
+		String date = null;
+		String hour = null;
+		String description = null;
+		String speaker = null;
+		String summary = null;
+		splitted = texto.split("\n");
+		for(int i=0;i<splitted.length;i++)
+		{
+			if(splitted[i].startsWith("Título: ")) title = splitted[i].replace("Título: ", "");
+			else if(splitted[i].startsWith("Local: ")) place = splitted[i].replace("Local: ", "");
+			else if(splitted[i].startsWith("Categoria: ")) category = splitted[i].replace("Categoria: ", "");
+			else if(splitted[i].startsWith("Data: ")) date = splitted[i].replace("Data: ", "").replace(".", "/");
+			else if(splitted[i].startsWith("Hora: ")) hour = splitted[i].replace("Hora: ", "").replace("h", "").replace(".", ":");
+			else if(splitted[i].startsWith("Palestrante: ")) speaker = splitted[i].replace("Palestrante: ", "");
+			else if(splitted[i].startsWith("Descrição: ")) description = splitted[i].replace("Descrição: ", "");
+			else if(splitted[i].startsWith("Resumo: ")) summary = splitted[i].replace("Resumo: ", "");
+		}
+		evento = new EventoIme(title,place,category,date,hour,description,speaker,summary);
+		return evento;
 
 	}
 }
