@@ -16,7 +16,7 @@ public class CreatePdf {
 		int pos = 100;
 		try
 		{
-			FileOutputStream fos = new FileOutputStream("arq.pdf");
+			FileOutputStream fos = new FileOutputStream("seminario"+evento.getDate()+".pdf");
         	PDF pdf = new PDF(fos);
         	Font f1 = new Font(pdf, CoreFont.HELVETICA_BOLD);
 			pdf.setTitle("Comprovante de presença");
@@ -67,7 +67,6 @@ public class CreatePdf {
 			try {
 				drawSize = len - 90;
 				if (drawSize <= 0) {
-					if(lines>0) pos+=15;
 					line.setPosition(100.0, pos);
 					line.setText(text.substring(lines * +90, lines
 							* 90 + len));
@@ -79,12 +78,17 @@ public class CreatePdf {
 					line.setText(text.substring(lines * +90, lines
 							* 90 + 90));
 					line.drawOn(page);
-					if (!text.substring(lines * 90 + 90, lines * 90 + 90 + 1)
+					if (!text.substring(lines * 90 + 89, lines * 90 + 90 +2)
 							.contains(" ")) {
+						line.setPosition(565, pos);
 						line.setText("-");
+						line.drawOn(page);
 						pos+=15;
+						line.setPosition(95, pos);
 						line.setText("-");
+						line.drawOn(page);
 					}
+					else pos+=15;
 				}
 				len = len - 90;
 				lines++;
