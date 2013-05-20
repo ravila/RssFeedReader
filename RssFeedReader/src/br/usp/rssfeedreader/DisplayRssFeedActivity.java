@@ -17,6 +17,7 @@ public class DisplayRssFeedActivity extends Activity {
 	private Button link; 
 	private ImageButton share;
 	private ImageButton calendar;
+	private ImageButton pdf;
 	private RSSItem rssItem;
 	private EventoIme eventoIme;
 	
@@ -31,6 +32,7 @@ public class DisplayRssFeedActivity extends Activity {
 		link = (Button) findViewById(R.id.verArtigo);
 		share = (ImageButton) findViewById(R.id.share);
 		calendar = (ImageButton) findViewById(R.id.calendar);
+		pdf = (ImageButton) findViewById(R.id.pdf);
 		
 		RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getApplicationContext());
 		
@@ -71,11 +73,11 @@ public class DisplayRssFeedActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// Essa opção adiciona um evento no calendário sem mostrar o calendario para o usuario
+				// Essa opï¿½ï¿½o adiciona um evento no calendï¿½rio sem mostrar o calendario para o usuario
 				// Necessita de permissao para escrver no calendario
 				//pushAppointmentsToCalender(DisplayRssFeedActivity.this, "Oi", "Alo", "aqui mesmo", 1, new Date().getTime());
 				
-				// Essa opção eh mais simples, porem faz com que o usuario tenha que confirmar a adição do evento no proprio calendario.
+				// Essa opï¿½ï¿½o eh mais simples, porem faz com que o usuario tenha que confirmar a adiï¿½ï¿½o do evento no proprio calendario.
 				//Calendar cal = Calendar.getInstance();              
 				Intent intent = new Intent(Intent.ACTION_EDIT);
 				intent.setType("vnd.android.cursor.item/event");
@@ -85,6 +87,14 @@ public class DisplayRssFeedActivity extends Activity {
 				intent.putExtra("description", eventoIme.getDescription());
 				intent.putExtra("eventLocation", eventoIme.getPlace());
 				startActivity(intent);
+			}
+		});
+        
+        pdf.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CreatePdf.createNewPdf(eventoIme);
 			}
 		});
          
@@ -145,13 +155,13 @@ public class DisplayRssFeedActivity extends Activity {
 		splitted = texto.split("\n");
 		for(int i=0;i<splitted.length;i++)
 		{
-			if(splitted[i].startsWith("Título: ")) title = splitted[i].replace("Título: ", "");
+			if(splitted[i].startsWith("Tï¿½tulo: ")) title = splitted[i].replace("Tï¿½tulo: ", "");
 			else if(splitted[i].startsWith("Local: ")) place = splitted[i].replace("Local: ", "");
 			else if(splitted[i].startsWith("Categoria: ")) category = splitted[i].replace("Categoria: ", "");
 			else if(splitted[i].startsWith("Data: ")) date = splitted[i].replace("Data: ", "").replace(".", "/");
 			else if(splitted[i].startsWith("Hora: ")) hour = splitted[i].replace("Hora: ", "").replace("h", "").replace(".", ":");
 			else if(splitted[i].startsWith("Palestrante: ")) speaker = splitted[i].replace("Palestrante: ", "");
-			else if(splitted[i].startsWith("Descrição: ")) description = splitted[i].replace("Descrição: ", "");
+			else if(splitted[i].startsWith("Descriï¿½ï¿½o: ")) description = splitted[i].replace("Descriï¿½ï¿½o: ", "");
 			else if(splitted[i].startsWith("Resumo: ")) summary = splitted[i].replace("Resumo: ", "");
 		}
 		evento = new EventoIme(title,place,category,date,hour,description,speaker,summary);
