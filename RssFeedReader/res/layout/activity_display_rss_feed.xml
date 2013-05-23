@@ -6,6 +6,16 @@
     <include
         android:id="@+id/footer_rss"
         layout="@layout/footer_display_rss" />
+
+    <ImageButton
+        android:id="@+id/pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_pdf"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/app_name" />
     
     <ImageButton
         android:id="@+id/share"

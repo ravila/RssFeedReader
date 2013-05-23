@@ -12,19 +12,17 @@ public class EventoIme {
 	private String date;
 	private String hour;
 	private String description;
-	private String speaker;
 	private String summary;
 	
 	
 	public EventoIme(String title, String place, String category, String date,
-			String hour, String description, String speaker, String summary) {
+			String hour, String description, String summary) {
 		this.title = title;
 		this.place = place;
 		this.category = category;
 		this.date = date;
 		this.hour = hour;
 		this.description = description;
-		this.speaker = speaker;
 		this.summary = summary;
 	}
 
@@ -87,16 +85,6 @@ public class EventoIme {
 		this.description = description;
 	}
 
-
-	public String getSpeaker() {
-		return speaker;
-	}
-
-
-	public void setSpeaker(String speaker) {
-		this.speaker = speaker;
-	}
-	
 	public String getSummary() {
 		return summary;
 	}

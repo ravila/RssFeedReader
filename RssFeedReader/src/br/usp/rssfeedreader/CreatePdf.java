@@ -2,7 +2,8 @@ package br.usp.rssfeedreader;
 
 import java.io.FileOutputStream;
 
-
+import com.pdfjet.Box;
+import com.pdfjet.Color;
 import com.pdfjet.CoreFont;
 import com.pdfjet.Font;
 import com.pdfjet.Letter;
@@ -12,22 +13,23 @@ import com.pdfjet.TextLine;
 
 public class CreatePdf {
 
-	public static void createNewPdf(EventoIme evento) {
+	public static boolean createNewPdf(String dir, EventoIme evento) {
 		int pos = 100;
-		try
-		{
-			FileOutputStream fos = new FileOutputStream("seminario"+evento.getDate()+".pdf");
+		
+		try {
+			String path = dir + "/seminario.pdf";
+			FileOutputStream fos = new FileOutputStream(path);
         	PDF pdf = new PDF(fos);
         	Font f1 = new Font(pdf, CoreFont.HELVETICA_BOLD);
-			pdf.setTitle("Comprovante de presen√ßa");
+			pdf.setTitle("Comprovante de presenÁa");
 	    	Page page = new Page(pdf, Letter.PORTRAIT);
 	    	
-	    	pos = drawPdf("T√≠tulo: " + evento.getTitle(),pos,pdf,page,f1);
-	    	pos = drawPdf("Local: " + evento.getPlace(),pos,pdf,page,f1);
+	    	pos = drawPdf("TÌtulo: " + evento.getTitle(),pos,pdf,page,f1);
+	    	pos = drawPdf("Local: " + evento.getPlace(),pos,pdf,page,f1);	
 	    	pos = drawPdf("Categoria: " + evento.getCategory(),pos,pdf,page,f1);
 	    	pos = drawPdf("Data: " + evento.getDate(),pos,pdf,page,f1);
 	    	pos = drawPdf("Hora: " + evento.getHour(),pos,pdf,page,f1);
-	    	pos = drawPdf("Palestrante: " + evento.getSpeaker(),pos,pdf,page,f1);
+	    	pos = drawPdf("DescriÁ„o: " + evento.getDescription(),pos,pdf,page,f1);
 	    	pos = drawPdf("Resumo: " + evento.getSummary(),pos,pdf,page,f1);
 			
 			Box stripe = new Box();
@@ -40,20 +42,19 @@ public class CreatePdf {
 
             TextLine line = new TextLine(f1);
             line.setPosition(100.0, 715);
-			line.setText("Assinatura Respons√°vel");
+			line.setText("Assinatura Respons·vel");
 			line.drawOn(page);
 			line.setPosition(400.0, 715);
 			line.setText("Assinatura Aluno");
 			line.drawOn(page);
 			
-			
-	    	//pos = drawPdf("Descri√ß√£o: " + evento.getDescription(),pos,pdf,page,f1);
 	    	pdf.flush();
 	        fos.close();
+	        return true;
 		}
-		catch(Exception e)
-		{
+		catch(Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 		
 	}

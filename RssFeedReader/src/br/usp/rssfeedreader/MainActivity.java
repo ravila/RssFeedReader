@@ -81,7 +81,6 @@ public class MainActivity extends ListActivity {
                 Intent in = new Intent(getApplicationContext(), DisplayRssFeedActivity.class);
                  
                 String sid = ((TextView) view.findViewById(R.id.rss_id)).getText().toString();
-                showToast("Carregando o id: " + sid);
                 in.putExtra("rss_id", sid);
                 startActivity(in);
             }

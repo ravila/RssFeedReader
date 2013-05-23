@@ -3,11 +3,13 @@ package br.usp.rssfeedreader;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DisplayRssFeedActivity extends Activity {
 
@@ -73,12 +75,6 @@ public class DisplayRssFeedActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// Essa opï¿½ï¿½o adiciona um evento no calendï¿½rio sem mostrar o calendario para o usuario
-				// Necessita de permissao para escrver no calendario
-				//pushAppointmentsToCalender(DisplayRssFeedActivity.this, "Oi", "Alo", "aqui mesmo", 1, new Date().getTime());
-				
-				// Essa opï¿½ï¿½o eh mais simples, porem faz com que o usuario tenha que confirmar a adiï¿½ï¿½o do evento no proprio calendario.
-				//Calendar cal = Calendar.getInstance();              
 				Intent intent = new Intent(Intent.ACTION_EDIT);
 				intent.setType("vnd.android.cursor.item/event");
 				intent.putExtra("beginTime", eventoIme.getMiliSeconds());
@@ -94,52 +90,17 @@ public class DisplayRssFeedActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				CreatePdf.createNewPdf(eventoIme);
+				boolean success = CreatePdf.createNewPdf(Environment.getExternalStorageDirectory().getAbsolutePath(), eventoIme);
+				if(success) {
+					Toast.makeText(getApplicationContext(), "Arquivo criado com sucesso.", Toast.LENGTH_SHORT).show();
+				}
+				else {
+					Toast.makeText(getApplicationContext(), "Erro ao criar arquivo.", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
          
 	}
-
-	/*public long pushAppointmentsToCalender(Activity curActivity, String title, String addInfo, String place, int status, long startDate) {
-
-	    String eventUriString = "content://com.android.calendar/events";
-	    ContentValues eventValues = new ContentValues();
-
-	    eventValues.put("calendar_id", 1); // id, We need to choose from
-	                                        // our mobile for primary
-	                                        // its 1
-	    eventValues.put("title", title);
-	    eventValues.put("description", addInfo);
-	    eventValues.put("eventLocation", place);
-
-	    long endDate = startDate + 1000 * 60 * 60; // For next 1hr
-
-	    eventValues.put("dtstart", startDate);
-	    eventValues.put("dtend", endDate);
-
-	    // values.put("allDay", 1); //If it is bithday alarm or such
-	    // kind (which should remind me for whole day) 0 for false, 1
-	    // for true
-	    eventValues.put("eventStatus", status); // This information is
-	    // sufficient for most
-	    // entries tentative (0),
-	    // confirmed (1) or canceled
-	    // (2):
-	    eventValues.put("visibility", 3); // visibility to default (0),
-	                                        // confidential (1), private
-	                                        // (2), or public (3):
-	    eventValues.put("transparency", 0); // You can control whether
-	                                        // an event consumes time
-	                                        // opaque (0) or transparent
-	                                        // (1).
-	    eventValues.put("hasAlarm", 1); // 0 for false, 1 for true
-
-	    Uri eventUri = curActivity.getApplicationContext().getContentResolver().insert(Uri.parse(eventUriString), eventValues);
-	    long eventID = Long.parseLong(eventUri.getLastPathSegment());
-	 
-	    return eventID;
-
-	}*/
 	
 	public EventoIme parse(String texto) {
 		EventoIme evento;
@@ -150,21 +111,19 @@ public class DisplayRssFeedActivity extends Activity {
 		String date = null;
 		String hour = null;
 		String description = null;
-		String speaker = null;
 		String summary = null;
 		splitted = texto.split("\n");
 		for(int i=0;i<splitted.length;i++)
 		{
-			if(splitted[i].startsWith("Tï¿½tulo: ")) title = splitted[i].replace("Tï¿½tulo: ", "");
+			if(splitted[i].startsWith("Título: ")) title = splitted[i].replace("Título: ", "");
 			else if(splitted[i].startsWith("Local: ")) place = splitted[i].replace("Local: ", "");
 			else if(splitted[i].startsWith("Categoria: ")) category = splitted[i].replace("Categoria: ", "");
 			else if(splitted[i].startsWith("Data: ")) date = splitted[i].replace("Data: ", "").replace(".", "/");
 			else if(splitted[i].startsWith("Hora: ")) hour = splitted[i].replace("Hora: ", "").replace("h", "").replace(".", ":");
-			else if(splitted[i].startsWith("Palestrante: ")) speaker = splitted[i].replace("Palestrante: ", "");
-			else if(splitted[i].startsWith("Descriï¿½ï¿½o: ")) description = splitted[i].replace("Descriï¿½ï¿½o: ", "");
+			else if(splitted[i].startsWith("Descrição: ")) description = splitted[i].replace("Descrição: ", "");
 			else if(splitted[i].startsWith("Resumo: ")) summary = splitted[i].replace("Resumo: ", "");
 		}
-		evento = new EventoIme(title,place,category,date,hour,description,speaker,summary);
+		evento = new EventoIme(title,place,category,date,hour,description,summary);
 		return evento;
 
 	}
