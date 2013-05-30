@@ -37,46 +37,32 @@ public class RSSFeedParser {
 	private static String TAG_PUB_DATE = "pubDate";
 	private static String TAG_CATEGORY_ID = "category";
 
-	private RSSFeed rssFeed = null;
 
+	public RSSFeed getRSSFeed(String xml, String rss_url) {
+		RSSFeed rssFeed = null;
+		if (xml != null) {
+			try {
+				Document doc = this.getDomElement(xml);
+				NodeList nodeList = doc.getElementsByTagName(TAG_CHANNEL);
+				Element e = (Element) nodeList.item(0);
 
-	public RSSFeed getRSSFeed(String url) {
-		String rss_feed_xml = null;
+				String title = this.getValue(e, TAG_TITLE);
+				String link = this.getValue(e, TAG_LINK);
+				String description = this.getValue(e, TAG_DESRIPTION);
+				String language = this.getValue(e, TAG_LANGUAGE);
+				List<RSSItem> items = this.getRSSFeedItems(e);
 
-		String rss_url = url; //this.getRSSLinkFromURL(url);
-
-		if (rss_url != null) {
-			rss_feed_xml = this.getXmlFromUrl(rss_url);
-			if (rss_feed_xml != null) {
-				try {
-					Document doc = this.getDomElement(rss_feed_xml);
-					NodeList nodeList = doc.getElementsByTagName(TAG_CHANNEL);
-					Element e = (Element) nodeList.item(0);
-
-					String title = this.getValue(e, TAG_TITLE);
-					String link = this.getValue(e, TAG_LINK);
-					String description = this.getValue(e, TAG_DESRIPTION);
-					String language = this.getValue(e, TAG_LANGUAGE);
-					List<RSSItem> items = this.getRSSFeedItems(rss_url, e);
-
-					rssFeed = new RSSFeed(title, description, link, rss_url, language, items);
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-
+				rssFeed = new RSSFeed(title, description, link, rss_url, language, items);
 			} 
-			else {
-
+			catch (Exception e) {
+				e.printStackTrace();
 			}
-		} 
-		else {
 
-		}
+		} 
 		return rssFeed;
 	}
 
-	private List<RSSItem> getRSSFeedItems(String rss_url, Element e){
+	private List<RSSItem> getRSSFeedItems(Element e){
 		List<RSSItem> itemsList = new ArrayList<RSSItem>();
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -109,34 +95,8 @@ public class RSSFeedParser {
 		return itemsList;
 	}
 
-	/*private String getRSSLinkFromURL(String url) {
-		String rss_url = null;
 
-		try {
-			org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
-			org.jsoup.select.Elements links = doc
-					.select("link[type=application/rss+xml]");
-
-			Log.d("No of RSS links found", " " + links.size());
-
-			if (links.size() > 0) {
-				rss_url = links.get(0).attr("href").toString();
-			} else {
-				org.jsoup.select.Elements links1 = doc
-						.select("link[type=application/atom+xml]");
-				if(links1.size() > 0){
-					rss_url = links1.get(0).attr("href").toString();    
-				}
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return rss_url;
-	}*/
-
-	private String getXmlFromUrl(String url) {
+	public RSSFeed parseXmlFromUrl(String url) {
 		String xml = null;
 
 		try {
@@ -151,7 +111,7 @@ public class RSSFeedParser {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return xml;
+		return getRSSFeed(xml,url);
 	}
 
 	private Document getDomElement(String xml) {
