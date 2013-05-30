@@ -234,7 +234,7 @@ public class MainActivity extends ListActivity {
         protected String doInBackground(String... args) {
             RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getApplicationContext());
             
-            rssFeed = rssParser.getRSSFeed(URL(departamentoId));
+            rssFeed = rssParser.parseXmlFromUrl(URL(departamentoId));
         	if(rssFeed == null) {
             	return null;
             }
